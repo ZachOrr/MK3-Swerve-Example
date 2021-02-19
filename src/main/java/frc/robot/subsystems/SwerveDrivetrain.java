@@ -54,6 +54,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 
   private final AnalogGyro gyro = new AnalogGyro(0);
 
+  // TODO: Update these CAN device IDs to match your TalonFX + CANCoder device IDs
   // TODO: Update module offsets to match your CANCoder offsets
   private SwerveModuleMK3[] modules = new SwerveModuleMK3[] {
     new SwerveModuleMK3(new TalonFX(1), new TalonFX(2), new CANCoder(0), Rotation2d.fromDegrees(0)), // Front Left

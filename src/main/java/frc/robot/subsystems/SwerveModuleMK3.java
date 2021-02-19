@@ -67,8 +67,10 @@ public class SwerveModuleMK3 {
    * Gets the relative rotational position of the module
    * @return The relative rotational position of the angle motor in degrees
    */
-  public double getAngle() {
-    return canCoder.getAbsolutePosition();
+  public Rotation2d getAngle() {
+    // Note: This assumes the CANCoders are setup with the default feedback coefficient
+    // and the sesnor value reports degrees.
+    return Rotation2d.fromDegrees(canCoder.getAbsolutePosition());
   }
 
   /**
@@ -76,7 +78,7 @@ public class SwerveModuleMK3 {
    * @param desiredState - A SwerveModuleState representing the desired new state of the module
    */
   public void setDesiredState(SwerveModuleState desiredState) {
-    Rotation2d currentRotation = Rotation2d.fromDegrees(getAngle());
+    Rotation2d currentRotation = getAngle();
     SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
 
     // Find the difference between our current rotational position + our new rotational position
