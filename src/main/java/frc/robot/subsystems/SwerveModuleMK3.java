@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
@@ -30,7 +31,7 @@ public class SwerveModuleMK3 {
   private TalonFX angleMotor;
   private CANCoder canCoder;
 
-  public SwerveModuleMK3(TalonFX driveMotor, TalonFX angleMotor, CANCoder canCoder) {
+  public SwerveModuleMK3(TalonFX driveMotor, TalonFX angleMotor, CANCoder canCoder, Rotation2d offset) {
     this.driveMotor = driveMotor;
     this.angleMotor = angleMotor;
     this.canCoder = canCoder;
@@ -55,6 +56,10 @@ public class SwerveModuleMK3 {
     driveTalonFXConfiguration.slot0.kF = kDriveF;
 
     driveMotor.configAllSettings(driveTalonFXConfiguration);
+
+    CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
+    canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
+    canCoder.configAllSettings(canCoderConfiguration);
   }
 
 
@@ -73,10 +78,10 @@ public class SwerveModuleMK3 {
   public void setDesiredState(SwerveModuleState desiredState) {
     Rotation2d currentRotation = Rotation2d.fromDegrees(getAngle());
     SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
-    
+
     // Find the difference between our current rotational position + our new rotational position
     Rotation2d rotationDelta = state.angle.minus(currentRotation);
-    
+
     // Find the new absolute position of the module based on the difference in rotation
     double deltaTicks = (rotationDelta.getDegrees() / 360) * kEncoderTicksPerRotation;
     // Convert the CANCoder from it's position reading back to ticks

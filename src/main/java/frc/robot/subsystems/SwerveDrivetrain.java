@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
@@ -53,11 +54,12 @@ public class SwerveDrivetrain extends SubsystemBase {
 
   private final AnalogGyro gyro = new AnalogGyro(0);
 
+  // TODO: Update module offsets to match your CANCoder offsets
   private SwerveModuleMK3[] modules = new SwerveModuleMK3[] {
-    new SwerveModuleMK3(new TalonFX(1), new TalonFX(2), new CANCoder(0)), // Front Left
-    new SwerveModuleMK3(new TalonFX(3), new TalonFX(4), new CANCoder(1)), // Front Right
-    new SwerveModuleMK3(new TalonFX(5), new TalonFX(6), new CANCoder(2)), // Back Left
-    new SwerveModuleMK3(new TalonFX(7), new TalonFX(8), new CANCoder(3))  // Back Right
+    new SwerveModuleMK3(new TalonFX(1), new TalonFX(2), new CANCoder(0), Rotation2d.fromDegrees(0)), // Front Left
+    new SwerveModuleMK3(new TalonFX(3), new TalonFX(4), new CANCoder(1), Rotation2d.fromDegrees(0)), // Front Right
+    new SwerveModuleMK3(new TalonFX(5), new TalonFX(6), new CANCoder(2), Rotation2d.fromDegrees(0)), // Back Left
+    new SwerveModuleMK3(new TalonFX(7), new TalonFX(8), new CANCoder(3), Rotation2d.fromDegrees(0))  // Back Right
   };
 
   public SwerveDrivetrain() {
